@@ -1,0 +1,20 @@
+{
+  "name": "resume-builder-app",
+  "version": "1.0.0",
+  "description": "A clean, modern, and user-friendly Resume Builder web app.",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "live-server src"
+  },
+  "dependencies": {
+    "html2pdf.js": "^0.10.1"
+  },
+  "keywords": [
+    "resume",
+    "builder",
+    "web",
+    "app"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
