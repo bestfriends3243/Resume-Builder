@@ -155,79 +155,82 @@ document.addEventListener('DOMContentLoaded', () => {
         const preview = document.getElementById('resume-preview');
         if (!preview) return;
 
-        // Create staging area
+        // Create staging area for PDF generation
         const container = document.createElement('div');
-        container.style.position = 'absolute';
-        container.style.left = '-9999px';
-        container.style.top = '0';
-        document.body.appendChild(container);
-
-        // Generate clean HTML structure with inline styles
-        const content = `
-            <div style="width:210mm; min-height:297mm; margin:0; padding:0; background:white; display:flex;">
-                <div style="width:35%; background-color:#2c3e50; padding:20mm; box-sizing:border-box; color:white;">
-                    <div style="margin-bottom:20mm;">
+        container.innerHTML = `
+            <div style="width:210mm; min-height:297mm; padding:20mm; box-sizing:border-box;">
+                <div style="display:flex;">
+                    <div style="width:35%; background-color:#2c3e50; padding:20px; color:white;">
+                        <!-- Photo Section -->
                         ${document.querySelector('#preview-photo') ? 
-                            `<img src="${document.querySelector('#preview-photo').src}" 
-                             style="width:100px; height:100px; border-radius:50%; border:3px solid white; 
-                             display:block; margin:0 auto 20mm auto;">` : ''}
+                            `<div style="text-align:center; margin-bottom:20px;">
+                                <img src="${document.querySelector('#preview-photo').src}" 
+                                     style="width:150px; height:150px; border-radius:50%; border:3px solid white;">
+                             </div>` : ''}
                         
-                        <h3 style="color:white; border-bottom:1px solid rgba(255,255,255,0.2); 
-                                 padding-bottom:5mm; margin-bottom:10mm;">Contact</h3>
-                        <p style="color:white; margin-bottom:5mm;">${document.getElementById('preview-email').textContent}</p>
-                        <p style="color:white; margin-bottom:5mm;">${document.getElementById('preview-phone').textContent}</p>
-                        <p style="color:white; margin-bottom:5mm;">${document.getElementById('preview-location').textContent}</p>
-                    </div>
+                        <!-- Contact Section -->
+                        <div style="margin-bottom:30px;">
+                            <h3 style="color:white; border-bottom:2px solid rgba(255,255,255,0.2); padding-bottom:10px;">Contact</h3>
+                            <p style="margin:5px 0;">${document.getElementById('preview-email').textContent}</p>
+                            <p style="margin:5px 0;">${document.getElementById('preview-phone').textContent}</p>
+                            <p style="margin:5px 0;">${document.getElementById('preview-location').textContent}</p>
+                        </div>
 
-                    <div style="margin-bottom:20mm;">
-                        <h3 style="color:white; border-bottom:1px solid rgba(255,255,255,0.2); 
-                                 padding-bottom:5mm; margin-bottom:10mm;">Education</h3>
-                        ${document.getElementById('preview-education').innerHTML}
-                    </div>
+                        <!-- Education Section -->
+                        <div style="margin-bottom:30px;">
+                            <h3 style="color:white; border-bottom:2px solid rgba(255,255,255,0.2); padding-bottom:10px;">Education</h3>
+                            ${document.getElementById('preview-education').innerHTML}
+                        </div>
 
-                    <div style="margin-bottom:20mm;">
-                        <h3 style="color:white; border-bottom:1px solid rgba(255,255,255,0.2); 
-                                 padding-bottom:5mm; margin-bottom:10mm;">Skills</h3>
-                        <div style="display:flex; flex-wrap:wrap; gap:5px;">
-                            ${Array.from(document.querySelectorAll('#preview-skills li'))
-                                .map(skill => `<span style="background:rgba(255,255,255,0.2); color:white; 
-                                             padding:5px 15px; border-radius:15px; margin:2px; 
-                                             display:inline-block;">${skill.textContent}</span>`).join('')}
+                        <!-- Skills Section -->
+                        <div style="margin-bottom:30px;">
+                            <h3 style="color:white; border-bottom:2px solid rgba(255,255,255,0.2); padding-bottom:10px;">Skills</h3>
+                            <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                                ${Array.from(document.querySelectorAll('#preview-skills li'))
+                                    .map(skill => `<span style="background:rgba(255,255,255,0.2); color:white; 
+                                                 padding:5px 10px; border-radius:15px; margin:2px; 
+                                                 display:inline-block;">${skill.textContent}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Languages Section -->
+                        <div style="margin-bottom:30px;">
+                            <h3 style="color:white; border-bottom:2px solid rgba(255,255,255,0.2); padding-bottom:10px;">Languages</h3>
+                            <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                                ${Array.from(document.querySelectorAll('#preview-languages span'))
+                                    .map(lang => `<span style="background:rgba(255,255,255,0.2); color:white; 
+                                                padding:5px 10px; border-radius:15px; margin:2px; 
+                                                display:inline-block;">${lang.textContent}</span>`).join('')}
+                            </div>
                         </div>
                     </div>
 
-                    <div style="margin-bottom:20mm;">
-                        <h3 style="color:white; border-bottom:1px solid rgba(255,255,255,0.2); 
-                                 padding-bottom:5mm; margin-bottom:10mm;">Languages</h3>
-                        <div style="display:flex; flex-wrap:wrap; gap:5px;">
-                            ${Array.from(document.querySelectorAll('.language-item'))
-                                .map(lang => `<span style="background:rgba(255,255,255,0.2); color:white; 
-                                            padding:5px 15px; border-radius:15px; margin:2px; 
-                                            display:inline-block;">${lang.textContent}</span>`).join('')}
+                    <div style="width:65%; padding:20px;">
+                        <!-- Header Section -->
+                        <h1 style="color:#2c3e50; font-size:28px; margin:0 0 5px 0;">
+                            ${document.getElementById('preview-name').textContent}
+                        </h1>
+                        <p style="color:#666; font-size:18px; margin:0 0 20px 0;">
+                            ${document.getElementById('preview-job-title').textContent}
+                        </p>
+
+                        <!-- Experience Section -->
+                        <div style="margin-bottom:30px;">
+                            <h2 style="color:#2c3e50; font-size:20px; border-bottom:2px solid #3498db; 
+                                      padding-bottom:10px; margin:0 0 15px 0;">Work Experience</h2>
+                            ${document.getElementById('preview-experience').innerHTML}
+                        </div>
+
+                        <!-- Interests Section -->
+                        <div style="margin-bottom:30px;">
+                            <h2 style="color:#2c3e50; font-size:20px; border-bottom:2px solid #3498db; 
+                                      padding-bottom:10px; margin:0 0 15px 0;">Interests</h2>
+                            <p style="color:#666;">${document.getElementById('preview-interests').textContent}</p>
                         </div>
                     </div>
-                </div>
-
-                <div style="width:65%; padding:20mm; box-sizing:border-box; background:white;">
-                    <h1 style="color:#2c3e50; font-size:24px; margin-bottom:5mm;">
-                        ${document.getElementById('preview-name').textContent}
-                    </h1>
-                    <p style="color:#666; font-size:18px; margin-bottom:15mm;">
-                        ${document.getElementById('preview-job-title').textContent}
-                    </p>
-
-                    <h2 style="color:#2c3e50; font-size:20px; border-bottom:1px solid #3498db; 
-                              padding-bottom:5px; margin:15px 0;">Work Experience</h2>
-                    ${document.getElementById('preview-experience').innerHTML}
-
-                    <h2 style="color:#2c3e50; font-size:20px; border-bottom:1px solid #3498db; 
-                              padding-bottom:5px; margin:15px 0;">Interests</h2>
-                    <p style="color:#666;">${document.getElementById('preview-interests').textContent}</p>
                 </div>
             </div>
         `;
-
-        container.innerHTML = content;
 
         // Configure PDF options
         const opt = {
@@ -238,9 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scale: 2,
                 useCORS: true,
                 letterRendering: true,
-                backgroundColor: '#FFFFFF',
-                windowWidth: 794, // A4 width in pixels
-                windowHeight: 1123 // A4 height in pixels
+                backgroundColor: '#FFFFFF'
             },
             jsPDF: { 
                 unit: 'mm',
@@ -254,8 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await html2pdf().set(opt).from(container).save();
         } catch (error) {
             console.error('PDF generation failed:', error);
-        } finally {
-            document.body.removeChild(container);
+            alert('Failed to generate PDF. Please try again.');
         }
     });
 });
